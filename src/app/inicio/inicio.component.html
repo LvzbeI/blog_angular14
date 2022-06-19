@@ -1,3 +1,4 @@
+<app-menu></app-menu>
 <div class="container-fluid bg-dark">
   <div class="row bg-dark">
       <div class="col"></div>
@@ -6,18 +7,27 @@
                 <div class="card-header">
 
                 </div>
+
                 <div class="card-body">
+                    <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text"><i class="bi bi-person-circle"></i></div>
+                            <div class="input-group-text"><i class="bi bi-chat-right-quote"></i></div>
                         </div>
                         <input type="text" class="form-control" id="topic"
-                        placeholder="Nombre de tema">
-
-
+                        placeholder="Nombre del tema" [(ngModel)]="tema">
+                    </div>
 
                 </div>
+
+
                 <div class="card-footer text-center">
-                    <button type="button" class="btn btn-primary" id="entrar">Agregar</button>
+                    <button
+                    (click)="agregar()"
+                    type="button"
+                    class="btn btn-dark"
+                    id="entrar">
+                    <i class="bi bi-plus-square"></i>
+                    </button>
                 </div>
             </div>
       </div>
@@ -36,10 +46,30 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+        <!-- ciclo for para repetir el componente n veces -->
+        <tr *ngFor="let topic of topics">
+          <td>{{topic.id}}</td>
+          <td>{{topic.tema}}</td>
+          <td>
+            <!-- Button trigger modal -->
+<button
+type="button"
+class="btn btn-primary mr-2"
+data-bs-toggle="modal"
+data-bs-target="#modificaTema"
+(click)="editarTema(topic)">
+<i class="bi bi-pencil-square"></i>
+</button>
+
+<button
+type="button"
+class="btn btn-danger"
+data-bs-toggle="modal"
+data-bs-target="#eliminaTema"
+(click)="editarTema(topic)">
+<i class="bi bi-trash"></i>
+</button>
+          </td>
         </tr>
       </tbody>
 
@@ -52,3 +82,51 @@
 
   </div>
 </div>
+
+
+<!-- Modal Modificar Tema -->
+<div class="modal fade" id="modificaTema" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modificar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+              {{temaEdit.id}}
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="bi bi-chat-right-quote"></i></div>
+                </div>
+                <input type="text" class="form-control" id="topicEdit"
+                placeholder="Nombre del tema"
+                [(ngModel)]="temaEdit.tema">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="guardarCambios()" data-bs-dismiss="modal">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="eliminaTema" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Esta seguro que desea eliminar el tema {{temaEdit.tema}}?
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" (click)="eliminarTema()" data-bs-dismiss="modal">Si</button>
+        </div>
+      </div>
+    </div>
+  </div>
